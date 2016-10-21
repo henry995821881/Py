@@ -6,5 +6,7 @@ print '\n'
 print r.encoding
 print '\n'
 print r.headers
+print '\n'
 #print r.content
+#print r.text
 
