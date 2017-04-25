@@ -6,9 +6,9 @@ import time
 class test_chrome:
 
      
-     def login(self,browser,name,pwd):
+     def login(self,browser,name,pwd,url_base):
           #browser.get("http://localhost/etrade/login.shtml")
-          browser.get("http://192.168.80.249:8080/etrade/login.shtml?ref_url=/etrade/ucenter.shtml")
+          browser.get(url_base+"/etrade/login.shtml?ref_url=/etrade/ucenter.shtml")
           time.sleep(1)
      	  browser.find_element_by_name("username").send_keys(name)
           browser.find_element_by_name("password").send_keys(pwd)
@@ -16,9 +16,9 @@ class test_chrome:
 
 
     
-     def addmycart(self,browser,orderid,num):
+     def addmycart(self,browser,orderid,num,url_base):
           time.sleep(1)
-          browser.get("http://192.168.80.249:8080/etrade/mall/mallDetail.shtml?order_id="+orderid)
+          browser.get(url_base+"/etrade/mall/mallDetail.shtml?order_id="+orderid)
           time.sleep(1)
           browser.find_element_by_id("count_number").clear()
           browser.find_element_by_id("count_number").send_keys(num)
@@ -26,16 +26,16 @@ class test_chrome:
 
 		
        
-     def mycart(self,browser):
+     def mycart(self,browser,url_base):
           time.sleep(1)
           browser.find_element_by_id("cx1").click()
           browser.find_element_by_id("submitAll").click()
           browser.find_elements_by_class_name("btn-primary")[0].click()
 
 
-     def payorder(self,browser):
+     def payorder(self,browser,url_base):
           time.sleep(1)
-          browser.get("http://192.168.80.249:8080/gzql/contract/contract_mgr_buy.shtml?menu_no=801102")
+          browser.get(url_base+"/gzql/contract/contract_mgr_buy.shtml?menu_no=801102")
           time.sleep(1)
           browser.find_elements_by_class_name("pay_order")[0].click()
           browser.find_element_by_id("password_3").send_keys("888888")
@@ -43,17 +43,17 @@ class test_chrome:
           browser.find_element_by_id("payButton").click()
 
 
-     def makerprovide(self,browser):
+     def makerprovide(self,browser,url_base):
           time.sleep(1)
-          browser.get("http://192.168.80.249:8080/gzql/contract/td_make.shtml?menu_no=802103")
+          browser.get(url_base+"/gzql/contract/td_make.shtml?menu_no=802103")
           #checkbox_all = browser.find_element_by_id("maker_check_all")
           #print checkbox_all
           #checkbox_all.click()
-          #time.sleep(1)
+          #time.sleep(60)
           #browser.find_element_by_id("batch_makeBill").click();
           browser.find_elements_by_class_name("btn-success")[0].click()
 
-     def makerprovide2(self,browser,num):
+     def makerprovide2(self,browser,num,url_base):
           time.sleep(1)
           check_inputs = browser.find_elements_by_class_name("check_input")
           time.sleep(2)
@@ -78,14 +78,15 @@ class test_chrome:
 
 
 if __name__ == "__main__":
+     url_base = "http://192.168.80.249:8080"
      browser = webdriver.Chrome()
      browser.implicitly_wait(10)
      test_case = test_chrome()
-     test_case.login(browser,"yy888888","88888")
-     test_case.addmycart(browser,"4931","2")
-     test_case.mycart(browser)
-     test_case.payorder(browser)
-     test_case.makerprovide(browser)
-     test_case.makerprovide2(browser,2)
-     time.sleep(30)
+     test_case.login(browser,"yy888888","88888",url_base)
+     test_case.addmycart(browser,"4931","2",url_base)
+     test_case.mycart(browser,url_base)
+     test_case.payorder(browser,url_base)
+     test_case.makerprovide(browser,url_base)
+     test_case.makerprovide2(browser,2,url_base)
+     time.sleep(10)
      #browser.quit()
