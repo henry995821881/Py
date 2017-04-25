@@ -2,7 +2,7 @@
 from selenium import webdriver
 import time
 
-
+#https://chromedriver.storage.googleapis.com/index.html?path=&sort=desc 浏览器驱动下载地址
 class test_chrome:
 
      #登陆
