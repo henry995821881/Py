@@ -43,7 +43,9 @@ class test_chrome:
           browser.get(url_base+"/gzql/contract/contract_mgr_buy.shtml?menu_no=801102")
           time.sleep(1)
           #browser.find_elements_by_class_name("pay_order")[0].click()
-          check_one_s = browser.find_elements_by_class_name("checkbox_one");
+          check_one_s = browser.find_elements_by_class_name("checkbox_one")
+          if len(check_one_s) < 1:
+               return
           for one in check_one_s:
           		one.click()
           		time.sleep(0.3)
@@ -106,6 +108,21 @@ class test_chrome:
           browser.find_element_by_id("tjButton").click()
           time.sleep(1)
           browser.find_element_by_css_selector("button[roles='btnDialog'][datas='ok']").click()
+          time.sleep(1)
+
+      # 打印对应身份证的第一个提单
+     def printprovide(self,browser,url_base):
+          browser.get(url_base+"/gzql/billladingprintmng/bladprtmngpage.shtml?menu_no=802102")
+          time.sleep(1)
+          browser.find_element_by_id("idcertificate").send_keys("330881199106229014")
+          browser.find_element_by_css_selector(".y_search").click()
+          time.sleep(1)
+          browser.find_element_by_css_selector(".ck_print").click()
+          time.sleep(1)
+          browser.find_element_by_css_selector(".print_btn").click()
+
+
+
 
 
 
@@ -113,7 +130,8 @@ class test_chrome:
 
 if __name__ == "__main__":
 
-     url_base = "http://192.168.80.249:8080"
+     #url_base = "http://192.168.80.249:8080"
+     url_base="http://localhost"
      username = "yy888888"
      passwd = "88888"
      #商品购买数量
@@ -128,7 +146,7 @@ if __name__ == "__main__":
     
      # 可以多次调用加入购物车商品，前提是注意要相同卖家的。否则后面付款走不过去
      #4931的商品加入购物车 数量为3，
-     cacul_way = 2# 理计购买2  磅计购买1
+     cacul_way = 1# 理计购买2  磅计购买1
      orderid = "4928"
      test_case.addmycart(browser,orderid,num,cacul_way,url_base)
 
@@ -142,5 +160,7 @@ if __name__ == "__main__":
      test_case.makerprovide(browser,url_base)
      
      test_case.makerprovide2(browser,num2,url_base)
+     #print
+     test_case.printprovide(browser,url_base)
      time.sleep(10)
-     browser.quit()
+     #browser.quit()
