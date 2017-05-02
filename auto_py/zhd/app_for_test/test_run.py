@@ -38,6 +38,8 @@ class Application(tk.Frame):
         self.param8.set("")
         self.param9.set("")
         self.param10.set("")
+        self.param11.set("")
+        self.param12.set("")
 
 
 
@@ -56,6 +58,9 @@ class Application(tk.Frame):
         b_dict["ck_username"] =self.e8.get()
         b_dict["ck_passwd"] =self.e9.get()
         b_dict["weight"] =self.e10.get()
+        b_dict["vehicle_no"]=self.e11.get()
+        b_dict["count"] =self.e12.get()
+        print b_dict
         return b_dict
 
 
@@ -85,12 +90,197 @@ class Application(tk.Frame):
         dict1 = self.get_all_text()
         li_for_write=[]
         for k,v in dict1.items():
-            li_for_write.append(k+"="+v+"\n")
+            li_for_write.append(k+"="+v.encode("utf-8")+"\n")
 
         f.writelines(li_for_write)  
         f.close
         #执行浏览器
         self.run_chrome()
+
+
+
+    def run_addcart(self,browser,username,orderid,num,cacul_way,url_base,test_case):
+
+        test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+
+
+
+    def run_cart_submit(self,browser,username,orderid,num,cacul_way,url_base,test_case):
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+          test_case.mycart(browser,url_base)
+
+    
+    def run_pay_order(self,browser,username,orderid,num,cacul_way,passwd,url_base,test_case):
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+         #提交购物车中所有商品
+          test_case.mycart(browser,url_base)
+         #付定金批量支付
+          test_case.payorder(browser,passwd,url_base)     
+
+
+
+    def run_make_provide(self,browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,url_base,test_case):
+      
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+         #提交购物车中所有商品
+          test_case.mycart(browser,url_base)
+         #付定金批量支付
+          test_case.payorder(browser,passwd,url_base)
+         #制作提单
+          test_case.makerprovide(browser,url_base)
+         
+          test_case.makerprovide2(browser,num2,vehicle_no,url_base)
+
+
+
+
+
+    def run_out_warehouse(self,browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case):
+
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+         #提交购物车中所有商品
+          test_case.mycart(browser,url_base)
+         # #付定金批量支付
+          test_case.payorder(browser,passwd,url_base)
+         # #制作提单
+          test_case.makerprovide(browser,url_base)
+         
+          test_case.makerprovide2(browser,num2,vehicle_no,url_base)
+         #  #logout
+          test_case.logout(browser,url_base)
+          #login
+          test_case.login(browser,ck_username,ck_passwd,url_base)
+          test_case.out_warehouse(browser,weight,url_base)
+
+       
+
+
+    def run_print_out_warehouse(self,browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case):
+      
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+         #提交购物车中所有商品
+          test_case.mycart(browser,url_base)
+         # #付定金批量支付
+          test_case.payorder(browser,passwd,url_base)
+         # #制作提单
+          test_case.makerprovide(browser,url_base)
+         
+          test_case.makerprovide2(browser,num2,vehicle_no,url_base)
+         #  #logout
+          test_case.logout(browser,url_base)
+          #login 出库
+          test_case.login(browser,ck_username,ck_passwd,url_base)
+          test_case.out_warehouse(browser,weight,url_base)
+
+          #合同批量支付
+          test_case.logout(browser,url_base)
+          test_case.login(browser,username,passwd,url_base)
+          test_case.pay_contract(browser,passwd,url_base)
+
+
+          #打印出门证
+          test_case.logout(browser,url_base)
+          test_case.login(browser,ck_username,ck_passwd,url_base)
+          test_case.print_outwarehouse(browser,vehicle_no,url_base)
+
+
+    def run_confrim_rec(self,browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case):
+      
+          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
+         #提交购物车中所有商品
+          test_case.mycart(browser,url_base)
+         # #付定金批量支付
+          test_case.payorder(browser,passwd,url_base)
+         # #制作提单
+          test_case.makerprovide(browser,url_base)
+         
+          test_case.makerprovide2(browser,num2,vehicle_no,url_base)
+         #  #logout
+          test_case.logout(browser,url_base)
+          #login 出库
+          test_case.login(browser,ck_username,ck_passwd,url_base)
+          test_case.out_warehouse(browser,weight,url_base)
+
+          #合同批量支付
+          test_case.logout(browser,url_base)
+          test_case.login(browser,username,passwd,url_base)
+          test_case.pay_contract(browser,passwd,url_base)
+
+
+          #打印出门证
+          test_case.logout(browser,url_base)
+          test_case.login(browser,ck_username,ck_passwd,url_base)
+          test_case.print_outwarehouse(browser,vehicle_no,url_base)
+
+
+          #提单确认收货
+          test_case.logout(browser,url_base)
+          test_case.login(browser,username,passwd,url_base)
+          test_case.confirm_rec(browser,url_base)
+
+
+
+    def run_busyness(self,url_base,username,passwd,num,num2,orderid,cacul_way,process,ck_username,ck_passwd,weight,vehicle_no,count,test_case,browser):
+
+
+
+         for x in xrange(0,count):
+            
+         
+           if process == 1:
+             #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_addcart(browser,username,orderid,num,cacul_way,url_base,test_case)
+            test_case.logout(browser,url_base)
+           elif process == 2:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_cart_submit(browser,username,orderid,num,cacul_way,url_base,test_case)
+            test_case.logout(browser,url_base)
+           
+           elif process == 3:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_pay_order(browser,username,orderid,num,cacul_way,passwd,url_base,test_case)
+            test_case.logout(browser,url_base)
+            
+           elif process == 4:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_make_provide(browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,url_base,test_case)
+            test_case.logout(browser,url_base)
+
+           elif process == 5:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_out_warehouse(browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case)
+            test_case.logout(browser,url_base)
+
+           elif process == 6:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_print_out_warehouse(browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case)
+            test_case.logout(browser,url_base)
+
+            #代码测试
+           elif process ==10:
+            test_case.logout(browser,url_base)
+            #login
+            test_case.login(browser,ck_username,ck_passwd,url_base)
+            test_case.print_outwarehouse(browser,vehicle_no,url_base)
+            test_case.logout(browser,url_base)
+
+           elif process == 7:
+            #login
+            test_case.login(browser,username,passwd,url_base)
+            self.run_confrim_rec(browser,username,orderid,num,cacul_way,passwd,num2,vehicle_no,ck_username,ck_passwd,weight,url_base,test_case)
+            test_case.logout(browser,url_base)
+
+
+
+
+
+
 
 
 
@@ -113,57 +303,16 @@ class Application(tk.Frame):
          ck_username =self.e8.get()
          ck_passwd = self.e9.get()
          weight = self.e10.get()
+         vehicle_no = self.e11.get()
+         count = int(self.e12.get())
          
          browser = webdriver.Chrome()
          browser.implicitly_wait(10)
          test_case = test_chrome()
 
-         print process
-         #login
-         test_case.login(browser,username,passwd,url_base)
-
-         if process == 1:
-          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
-
-         elif process == 2:
-
-          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
-          test_case.mycart(browser,url_base)
-         elif process == 3:
-
-          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
-         #提交购物车中所有商品
-          test_case.mycart(browser,url_base)
-         #付定金批量支付
-          test_case.payorder(browser,url_base)
-         elif process == 4:
          
-
-          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
-         #提交购物车中所有商品
-          test_case.mycart(browser,url_base)
-         #付定金批量支付
-          test_case.payorder(browser,url_base)
-         #制作提单
-          test_case.makerprovide(browser,url_base)
          
-          test_case.makerprovide2(browser,num2,url_base)
-         elif process == 5:
-          test_case.addmycart(browser,orderid,num,cacul_way,url_base)
-         #提交购物车中所有商品
-          test_case.mycart(browser,url_base)
-         # #付定金批量支付
-          test_case.payorder(browser,url_base)
-         # #制作提单
-          test_case.makerprovide(browser,url_base)
-         
-          test_case.makerprovide2(browser,num2,url_base)
-         #  #logout
-          test_case.logout(browser,url_base)
-          #login
-          test_case.login(browser,ck_username,ck_passwd,url_base)
-          test_case.out_warehouse(browser,weight,url_base)
-
+         self.run_busyness(url_base,username,passwd,num,num2,orderid,cacul_way,process,ck_username,ck_passwd,weight,vehicle_no,count,test_case,browser)
 
          
          time.sleep(10)
@@ -222,12 +371,18 @@ class Application(tk.Frame):
 
 
         self.param7=tk.StringVar()
-        tk.Label(self,text=u"1到购物车").grid(row=7,column=1)
-        tk.Label(self,text=u"2提交订单").grid(row=8,column=1)
-        tk.Label(self,text=u"3付款订单").grid(row=9,column=1)
-        tk.Label(self,text=u"4制作提单").grid(row=10,column=1)
-        tk.Label(self,text=u"5仓库出库").grid(row=11,column=1)
-        tk.Label(self,text=u"步骤到哪：").grid(row=12)
+        tk.Label(self,text=u"1到购物车",fg="red").grid(row=7,column=0)
+        tk.Label(self,text=u"2提交订单",fg="red").grid(row=8,column=0)
+        tk.Label(self,text=u"3付款订单",fg="red").grid(row=9,column=0)
+        tk.Label(self,text=u"4制作提单",fg="red").grid(row=10,column=0)
+        tk.Label(self,text=u"5仓库出库",fg="red").grid(row=11,column=0)
+
+        tk.Label(self,text=u"6合同付款出门打印",fg="red").grid(row=7,column=1)
+        tk.Label(self,text=u"7提单确认收货",fg="red").grid(row=8,column=1)
+        tk.Label(self,text=u"8备用",fg="red").grid(row=9,column=1)
+        tk.Label(self,text=u"9备用",fg="red").grid(row=10,column=1)
+        tk.Label(self,text=u"10测试代码",fg="red").grid(row=11,column=1)
+        tk.Label(self,text=u"步骤到哪:",fg="blue").grid(row=12)
         self.e7 = tk.Entry(self,textvariable=self.param7)
         self.e7.grid(row=12,column=1)
         self.param7.set(self.get_param("process"))
@@ -252,13 +407,27 @@ class Application(tk.Frame):
         self.e10.grid(row=15,column=1)
         self.param10.set(self.get_param("weight"))
 
+        self.param11= tk.StringVar()
+        tk.Label(self,text=u"车牌号码:").grid(row=16)
+        self.e11 = tk.Entry(self,textvariable=self.param11)
+        self.e11.grid(row=16,column=1)
+        self.param11.set(self.get_param("vehicle_no"))
+
+
+        self.param12= tk.StringVar()
+        tk.Label(self,text=u"循环次数:").grid(row=17)
+        self.e12 = tk.Entry(self,textvariable=self.param12)
+        self.e12.grid(row=17,column=1)
+        self.param12.set(self.get_param("count"))
+
+
 
         self.clear_btn =tk.Button(self,text="重置参数",command=self.clear_text)
-        self.clear_btn.grid(row=16)
+        self.clear_btn.grid(row=18)
 
 
         self.submit_btn=tk.Button(self,text="执行浏览器",command=self.write_new_param)
-        self.submit_btn.grid(row=16,column=1)
+        self.submit_btn.grid(row=18,column=1)
                     
   
 
@@ -277,7 +446,7 @@ class test_chrome:
      #加入购物车 
      def addmycart(self,browser,orderid,num,way,url_base):
           browser.get(url_base+"/etrade/mall/mallDetail.shtml?order_id="+orderid)
-          time.sleep(1)
+          time.sleep(2)
           
           radios = browser.find_elements_by_class_name("price_type_class")
           if (len(radios) > 1 and way == 1):
@@ -296,10 +465,12 @@ class test_chrome:
           time.sleep(1)
           browser.find_element_by_id("submitAll").click()
           browser.find_elements_by_class_name("btn-primary")[0].click()
+          time.sleep(2)
+          browser.find_elements_by_class_name("jx_btn")[1].click()
           time.sleep(1)
 
       #定金付款 付款所有定金订单
-     def payorder(self,browser,url_base):
+     def payorder(self,browser,passwd_,url_base):
           browser.get(url_base+"/gzql/contract/contract_mgr_buy.shtml?menu_no=801102")
           time.sleep(1)
           #browser.find_elements_by_class_name("pay_order")[0].click()
@@ -312,7 +483,7 @@ class test_chrome:
 
           browser.find_element_by_id("batch_makeBill").click()
           time.sleep(1)
-          browser.find_element_by_id("password_3").send_keys("888888")
+          browser.find_element_by_id("password_3").send_keys(passwd_)
           browser.find_element_by_id("vcode_3").send_keys("jlkf")
           browser.find_element_by_id("payButton").click()
           time.sleep(1)
@@ -338,7 +509,7 @@ class test_chrome:
           
           
      #提单制作页面 
-     def makerprovide2(self,browser,num,url_base):
+     def makerprovide2(self,browser,num,vehicle_no,url_base):
           check_inputs = browser.find_elements_by_class_name("check_input")
           for inp in check_inputs:
                inp.click()
@@ -362,11 +533,13 @@ class test_chrome:
           browser.find_element_by_id("delivery_man_input").send_keys(u"sff")
           browser.find_element_by_id("phone_dv").send_keys("14725836998")
           browser.find_element_by_id("certificate_code").send_keys("330881199106229014")
-          browser.find_element_by_id("vehicle_no_input").send_keys(u"苏d12345")
+          browser.find_element_by_id("vehicle_no_input").send_keys(vehicle_no)
           #browser.find_element_by_name("str3").send_keys("yy888");
           #browser.find_element_by_name("str4").send_keys("14725836998");
           browser.find_element_by_id("tjButton").click()
           time.sleep(1)
+          browser.find_element_by_css_selector("button[roles='btnDialog'][datas='ok']").click()
+          time.sleep(6)
           browser.find_element_by_css_selector("button[roles='btnDialog'][datas='ok']").click()
           time.sleep(1)
 
@@ -389,7 +562,7 @@ class test_chrome:
      def out_warehouse(self,browser,weight,url_base):
           browser.get(url_base+"/gzql/ladingBillManage/ladingBillManage_warehouse.shtml?menu_no=971101")
           time.sleep(1)
-          browser.find_elements_by_class_name("OutWhBtn")[0].click()
+          browser.find_elements_by_class_name("operat")[0].click()
           time.sleep(1)
           input_all = browser.find_elements_by_class_name("weightBlur")
           for inn in input_all:
@@ -399,6 +572,8 @@ class test_chrome:
                 time.sleep(0.3)
 
           browser.find_element_by_id("OutWhBtn").click()
+          time.sleep(6)
+          browser.find_element_by_css_selector("button[roles='btnDialog'][datas='ok']").click()
           time.sleep(1)
 
 
@@ -408,14 +583,59 @@ class test_chrome:
           time.sleep(1)
 
 
+     def pay_contract(self,browser,passwd_,url_base):
+          browser.get(url_base+"/gzql/contract/contract_show_buy.shtml?menu_no=801103&is_confirm=6")
+          time.sleep(2)
+          check_one_s = browser.find_elements_by_class_name("choose_check")
+          if len(check_one_s) < 1:
+            return
+          browser.find_element_by_id("choose_check_all").click()
+          time.sleep(0.5)
+          browser.find_element_by_id("batch_pay").click()
+          time.sleep(2)
+          browser.find_element_by_id("password_3").send_keys(passwd_)
+          browser.find_element_by_id("vcode_3").send_keys("wqer")
+          browser.find_element_by_id("payButton").click()
+          time.sleep(1)
+
+
+          #打印出门证自提的
+     def print_outwarehouse(self,browser,vehicle_no,url_base):
+          browser.get(url_base+"/gzql/certfpntmng/certfpntmngckpage.shtml?menu_no=972101")
+          time.sleep(1)
+          browser.find_element_by_id("vehicle_no").send_keys(vehicle_no)
+          browser.find_elements_by_class_name("y_search")[0].click()
+          time.sleep(1)
+          ck = browser.find_elements_by_class_name("ck_print")
+          if len(ck) < 1:
+            return
+          ck[0].click()
+          time.sleep(1)
+          browser.find_element_by_id("prn_btn").click()
+          time.sleep(1)
+
+
+      #第一个确认收货
+     def confirm_rec(self,browser,url_base):
+          browser.get(url_base+"/gzql/billmgr/bill_mgr_buy.shtml?menu_no=802101")
+          time.sleep(2)
+          browser.find_elements_by_class_name("receiptBtn")[0].click()
+          time.sleep(1)
+          browser.find_element_by_id("receiptBtn").click()
+          time.sleep(1)
+          browser.find_element_by_css_selector("button[roles='btnDialog'][datas='ok']").click()
+          time.sleep(1)
+
+
+
 
        
 
 
 
 
-
-root=tk.Tk()  
-root.title("友邻港自动测试")
-app=Application(master=root)  
-app.mainloop() 
+if __name__ =="__main__":
+  root=tk.Tk()  
+  root.title("友邻港自动测试")
+  app=Application(master=root)  
+  app.mainloop() 
