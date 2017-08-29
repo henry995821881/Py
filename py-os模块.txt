@@ -1,0 +1,201 @@
+python基础之模块之os模块
+
+os模块
+
+os模块的作用：
+
+　　os，语义为操作系统，所以肯定就是操作系统相关的功能了，可以处理文件和目录这些我们日常手动需要做的操作，就比如说：显示当前目录下所有文件/删除某个文件/获取文件大小……
+
+　　另外，os模块不受平台限制，也就是说：当我们要在linux中显示当前路径时就要用到pwd命令，而Windows中cmd命令行下就要用到这个，额...我擦，我还真不知道，（甭管怎么着，肯定不是pwd），这时候我们使用python中os模块的os.path.abspath(name)功能，甭管是linux或者Windows都可以获取当前的绝对路径。
+
+os模块的常用功能：
+
+1  os.name      #显示当前使用的平台
+
+
+>>> os.name
+'nt'                  #这表示Windows
+>>> os.name
+'posix'             #这表示Linux
+2  os.getcwd()      #显示当前python脚本工作路径
+
+
+>>> os.getcwd()
+'C:\\Users\\Capital-D\\PycharmProjects\\untitled'    #使用pycharm
+
+>>> os.getcwd()
+'/root'         #Linux平台在/root目录直接使用python3命令
+3  os.listdir('dirname')        #返回指定目录下的所有文件和目录名
+
+
+复制代码
+#相对于os.getcwd路径下的文件
+>>> os.listdir()
+['.idea', 'test']
+
+
+>>> os.listdir()
+['.bash_logout', 'Python-3.4.4', '.mysql_history', '.tcshrc', 'Python-3.4.4.tar.xz', '.bash_profile', '.lesshst', 'install.log.syslog', '.cshrc', '04.sql', 'anaconda-ks.cfg', 'test', '.viminfo', 'phpMyAdmin-4.4.15-all-languages.tar.bz2', '1test', '.bashrc', 'binlog.sql', 'back.sql', 'install.log', 'binlog4.sql', '.bash_history', 'backup.sql', 'text.py', '.rnd', 'test1']
+复制代码
+4  os.remove('filename')       #删除一个文件
+
+
+复制代码
+[root@slyoyo ~]# touch hahaha
+[root@slyoyo ~]# ls
+04.sql           back.sql     binlog.sql   install.log.syslog                       Python-3.4.4.tar.xz  text.py
+1test            backup.sql   hahaha       phpMyAdmin-4.4.15-all-languages.tar.bz2  test
+anaconda-ks.cfg  binlog4.sql  install.log  Python-3.4.4                             test1
+#hahaha（粉色字体）存在
+[root@slyoyo ~]# python3
+Python 3.4.4 (default, Apr  5 2016, 04:23:19) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-4)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.remove('hahaha')
+>>> exit()
+[root@slyoyo ~]# ls
+04.sql  anaconda-ks.cfg  backup.sql   binlog.sql   install.log.syslog                       Python-3.4.4         test   text.py
+1test   back.sql         binlog4.sql  install.log  phpMyAdmin-4.4.15-all-languages.tar.bz2  Python-3.4.4.tar.xz  test1
+#hahaha已被删
+复制代码
+5  os.makedirs('dirname/dirname')     #可生成多层递规目录
+
+
+复制代码
+[root@slyoyo ~]# ls
+04.sql  anaconda-ks.cfg  backup.sql   binlog.sql   install.log.syslog                       Python-3.4.4         test   text.py
+1test   back.sql         binlog4.sql  install.log  phpMyAdmin-4.4.15-all-languages.tar.bz2  Python-3.4.4.tar.xz  test1
+[root@slyoyo ~]# python3
+Python 3.4.4 (default, Apr  5 2016, 04:23:19) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-4)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.makedirs('hahaha/linghuchong')
+>>> exit()
+[root@slyoyo ~]# ls
+04.sql           back.sql     binlog.sql   install.log.syslog                       Python-3.4.4.tar.xz  text.py
+1test            backup.sql   hahaha       phpMyAdmin-4.4.15-all-languages.tar.bz2  test
+anaconda-ks.cfg  binlog4.sql  install.log  Python-3.4.4                             test1
+[root@slyoyo ~]# ls hahaha/
+linghuchong
+[root@slyoyo ~]# ls hahaha/linghuchong/
+[root@slyoyo ~]# 
+复制代码
+6  os.rmdir('dirname')     #删除单级目录
+
+
+复制代码
+[root@slyoyo ~]# ls
+04.sql           back.sql     binlog.sql   install.log.syslog                       Python-3.4.4.tar.xz  text.py
+1test            backup.sql   hahaha       phpMyAdmin-4.4.15-all-languages.tar.bz2  test
+anaconda-ks.cfg  binlog4.sql  install.log  Python-3.4.4                             test1
+[root@slyoyo ~]# ls hahaha/
+linghuchong
+[root@slyoyo ~]# ls hahaha/linghuchong/
+[root@slyoyo ~]# python3
+Python 3.4.4 (default, Apr  5 2016, 04:23:19) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-4)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.rmdir('hahaha/linghuchong')
+>>> exit()
+[root@slyoyo ~]# ls hahaha/
+[root@slyoyo ~]# 
+复制代码
+7  os.rename("oldname","newname")    #重命名文件
+
+
+复制代码
+>>> os.getcwd()
+'/root/hahaha'
+>>> os.listdir()
+['test']
+>>> os.rename('test','test_new')
+>>> os.listdir()
+['test_new']
+复制代码
+8  os.system()    #运行shell命令,注意：这里是打开一个新的shell，运行命令，当命令结束后，关闭shell
+
+
+>>> os.system('pwd')
+/root/hahaha
+0
+9  os.sep    #显示当前平台下路径分隔符
+
+
+>>> os.sep
+'/'               #linux
+
+>>> os.sep
+'\\'             #windows
+10  os.linesep    #给出当前平台使用的行终止符
+
+
+>>> os.linesep
+'\n'      #linux
+
+>>> os.linesep
+'\r\n'    #windows
+11  os.environ    #获取系统环境变量
+
+
+复制代码
+os.environ
+environ({'USERPROFILE': 'C:\\Users\\Capital-D', 'PROCESSOR_ARCHITECTURE': 'x86', 'SESSIONNAME': 'Console', 'UGII_BASE_DIR': 'D:\\Program Files (x86)\\Siemens\\NX 8.0', 'COMMONPROGRAMW6432': 'C:\\Program Files\\Common Files', 'COMMONPROGRAMFILES(X86)': 'C:\\Program Files (x86)\\Common Files', 'MOZ_PLUGIN_PATH': 'C:\\Program Files (x86)\\Foxit Software\\Foxit Reader\\plugins\\', 'ALLUSERSPROFILE': 'C:\\ProgramData', 'PYTHONIOENCODING': 'UTF-8', 'NUMBER_OF_PROCESSORS': '4', 'APPDATA': 'C:\\Users\\Capital-D\\AppData\\Roaming', 'TERM': 'emacs', 'TEMP': 'C:\\Users\\CAPITA~1\\AppData\\Local\\Temp', 'PROGRAMDATA': 'C:\\ProgramData', 'COMSPEC': 'C:\\windows\\system32\\cmd.exe', 'WINDIR': 'C:\\windows', 'PROCESSOR_IDENTIFIER': 'Intel64 Family 6 Model 58 Stepping 9, GenuineIntel', 'PATHEXT': '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.PY', 'PATH': 'C:\\ProgramData\\Oracle\\Java\\javapath;C:\\Program Files (x86)\\Common Files\\NetSarang;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files (x86)\\Intel\\iCLS Client\\;C:\\Program Files\\Intel\\iCLS Client\\;C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\IPT;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\IPT', 'UGII_ROOT_DIR': 'D:\\Program Files (x86)\\Siemens\\NX 8.0\\UGII\\', 'COMPUTERNAME': 'IDEA-PC', 'USERDOMAIN': 'idea-PC', 'TMP': 'C:\\Users\\CAPITA~1\\AppData\\Local\\Temp', 'SYSTEMROOT': 'C:\\windows', 'PROCESSOR_REVISION': '3a09', 'FP_NO_HOST_CHECK': 'NO', 'PROGRAMFILES': 'C:\\Program Files (x86)', 'PYTHONDONTWRITEBYTECODE': '1', 'LOCALAPPDATA': 'C:\\Users\\Capital-D\\AppData\\Local', 'PYTHONUNBUFFERED': '1', 'LOGONSERVER': '\\\\IDEA-PC', 'UGII_LANG': 'simpl_chinese', 'SYSTEMDRIVE': 'C:', 'PUBLIC': 'C:\\Users\\Public', 'HOMEPATH': '\\Users\\Capital-D', 'PYTHONPATH': 'C:\\Program Files (x86)\\JetBrains\\PyCharm 5.0.2\\helpers\\pydev', 'USERNAME': 'Capital-D', 'UGS_LICENSE_SERVER': '28000@idea-pc', 'USERDOMAIN_ROAMINGPROFILE': 'idea-PC', 'PYCHARM_HOSTED': '1', 'OS': 'Windows_NT', 'PROCESSOR_ARCHITEW6432': 'AMD64', 'PROGRAMFILES(X86)': 'C:\\Program Files (x86)', 'PROGRAMW6432': 'C:\\Program Files', 'PSMODULEPATH': 'C:\\windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\', 'COMMONPROGRAMFILES': 'C:\\Program Files (x86)\\Common Files', 'IPYTHONENABLE': 'True', 'HOMEDRIVE': 'C:', 'CONFIGSETROOT': 'C:\\windows\\ConfigSetRoot', 'PROCESSOR_LEVEL': '6'})
+复制代码
+12  os.path.abspath(path)    #显示当前绝对路径
+
+
+>>> os.path.abspath('test')
+'C:\\Users\\Capital-D\\PycharmProjects\\untitled\\test'
+13  os.path.dirname(path)    #返回该路径的父目录
+
+
+>>> os.path.abspath('test')
+'C:\\Users\\Capital-D\\PycharmProjects\\untitled\\test'
+>>> os.path.dirname(os.path.abspath('test'))
+'C:\\Users\\Capital-D\\PycharmProjects\\untitled'
+14  os.path.basename(path)    #返回该路径的最后一个目录或者文件,如果path以／或\结尾，那么就会返回空值。
+
+
+>>> os.path.dirname(os.path.abspath('test'))
+'C:\\Users\\Capital-D\\PycharmProjects\\untitled'
+>>> os.path.basename(os.path.dirname(os.path.abspath('test')))
+'untitled'
+15  os.path.isfile(path)     #如果path是一个文件，则返回True
+
+
+复制代码
+[root@slyoyo ~]# ls
+04.sql           back.sql     binlog.sql   install.log.syslog                       Python-3.4.4.tar.xz  text.py
+1test            backup.sql   hahaha       phpMyAdmin-4.4.15-all-languages.tar.bz2  test
+anaconda-ks.cfg  binlog4.sql  install.log  Python-3.4.4                             test1
+[root@slyoyo ~]# python3
+Python 3.4.4 (default, Apr  5 2016, 04:23:19) 
+[GCC 4.4.7 20120313 (Red Hat 4.4.7-4)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import os
+>>> os.path.isfile('test')
+True
+复制代码
+16  os.path.isdir(path)    #如果path是一个目录，则返回True
+
+
+>>> os.path.isdir('hahaha')
+True
+17  os.stat()    #获取文件或者目录信息
+
+
+>>> os.stat('test')
+os.stat_result(st_mode=33188, st_ino=137149, st_dev=2050, st_nlink=1, st_uid=0, st_gid=0, st_size=85, st_atime=1462373193, st_mtime=1462373186, st_ctime=1462373186)
+18  os.path.split(path)  #将path分割成路径名和文件名。（事实上，如果你完全使用目录，它也会将最后一个目录作为文件名而分离，同时它不会判断文件或目录是否存在）
+
+
+>>> os.path.split('/root/test')
+('/root', 'test')
+19  os.path.join(path,name)   #连接目录与文件名或目录 结果为path/name
+
+
+>>> os.path.join('/root/haha','test')
+'/root/haha/test'
