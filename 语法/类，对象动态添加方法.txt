@@ -1,0 +1,73 @@
+Python中类的方法属性与方法属性的动态绑定
+
+最近在学习python，纯粹是自己的兴趣爱好，然而并没有系统地看python编程书籍，觉得上面描述过于繁琐，在网站找了一些学习的网站，发现廖雪峰老师的网站上面的学习资源很不错，而且言简意赅，提取了一些python中的重要的语法和案例。重要的是可以在线测试python的运行代码，缺点就是没有系统的看python的书籍，不能及时的将知识的碎片化联系在一起，这也是看书与不看书的区别。尤其是在python类与实例的方法的调用中觉得云里雾里，思考之后将自己的想法记录下，一来加深自己理解，巩固自己记忆，而来帮助一些想要学习python的朋友理解这门抽象的语言，理解不当之处，希望大家给予指正，谢谢。
+
+1、python中的类与实例
+
+先定义一个类
+
+class Student(object):
+初始化，将一些必要属性绑定到Student类中
+
+def __init__(self, name, score):
+        self.name = name
+        self.score = score
+在内部定义一个函数，实现对传入实例的属性操作，将数据进行封装在内部，这些封装的数据本身适合类进行关联的，称之为类的方法。
+
+def print_score(self):
+        print('%s: %s' % (self.name, self.score))
+2、对实例拥有的属性与方法的调用
+
+传入一个实例
+
+bart = Student('Bart Simpson', 59)
+对属性的调用
+
+>>> bart.name
+'Bart Simpson'
+对方法的调用
+
+>>> bart.print_score()
+Bart Simpson: 59
+都没有问题，以下来理解python中实例中属性与方法的绑定
+
+3、python中实例属性与方法绑定
+
+先定义一个类
+
+class Student(object):
+    pass
+传入一个实例
+
+s = Student()
+动态给实例绑定一个属性
+
+s.name = 'Michael' 
+接下来给实例绑定方法
+
+先定义一个函数
+
+def set_age(self, age): # 定义一个函数作为实例方法
+    self.age = age
+对实例的方法绑定
+
+from types import MethodType
+s.set_age = MethodType(set_age, s) # 给实例绑定一个方法
+s.set_age(25) # 调用实例方法
+>>> s.age # 测试结果
+25
+对类的方法绑定
+
+ def set_score(self, score):#定义一个函数作为类的方法
+     self.score = score
+
+ Student.set_score = set_score#绑定方法
+廖老师在后面补充了一句：set_score方法可以直接定义在class中，但动态绑定允许我们在程序运行的过程中动态给class加上功能，这在静态语言中很难实现。
+
+我理解的意思是，一般的对于定义一个类，会在类进行初始化的时候进行属性的绑定，传入实例的时候直接传入带参数的实例，通过内部定义的一些方法，就直接可以对实例的属性和实例继承于类的方法进行数据操作，引用，例如xxx.name   xxx.print_name的形式。但是如果定义的类没有初始化，基于python语言良好的动态绑定的属性，我们可以对传入的实例进行实例和方法的绑定，对属性的绑定比较简单，对方法的绑定需要通过from types import MethodType 的形式，（其他的形式暂时还不知道），告诉解释器s.set_age的方法操作是将set_age函数绑定s 即  s.set_age = MethodType(set_age, s)   ，这样python就知道怎样执行s的set_age方法。但是这样绑定方法只能对类中的绑定的方法实例起效，要想对类中所有实例生效需要动态的对类进行方法的绑定。就像我们上面看到的一样。绑定之后，接下来就直接可以类似于xxx.name   xxx.print_name　的形式进行调用了。
+
+ 
+
+对于方法是否能够直接调用，在于定义的函数是否在类中的定义还是基于函数的定义，对于不在类中定义的函数，实现对实例的方法操作就需要进行动态的绑定，或者对实例所属的类进行方法绑定；而在类中定义的函数即方法，在实例中可以直接进行调用。
+
+ 
